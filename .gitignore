@@ -1,0 +1,17 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Added by GitDesk Security Guard
+.env.example
+
+# Added by GitDesk Security Guard
+DEPLOYMENT_GUIDE.md
+
+# Added by GitDesk Security Guard
+firebase-applet-config.json
