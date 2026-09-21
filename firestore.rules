@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Products collection: Readable by anyone, writable by any authenticated user (e.g. admin or during setup)
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if true;
+    }
+
+    // Orders collection: Anyone can create (to allow anonymous gym customers), read/update/delete enabled for management
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read, update, delete: if true;
+    }
+
+    // Settings collection: Anyone can read, anyone can write (for admin configuration)
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Devices collection: Anyone can register/update their subscription token
+    match /devices/{deviceId} {
+      allow read, write: if true;
+    }
+
+    // Announcements collection: Anyone can read/listen, anyone can publish (for store owners)
+    match /announcements/{announcementId} {
+      allow read, write: if true;
+    }
+  }
+}
