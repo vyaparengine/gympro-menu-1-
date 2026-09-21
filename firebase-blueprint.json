@@ -1,0 +1,156 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A gym supplement product",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the product"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Product name"
+        },
+        "price": {
+          "type": "number",
+          "description": "Price of the product"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Product description"
+        },
+        "image": {
+          "type": "string",
+          "description": "URL of the product image"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["Protein", "Creatine", "Mass Gainer", "Pre-workout"],
+          "description": "Product category"
+        },
+        "inStock": {
+          "type": "boolean",
+          "description": "Stock availability status"
+        }
+      },
+      "required": ["id", "name", "price", "description", "image", "category", "inStock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer supplement order",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the order"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Customer name"
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Customer phone number"
+        },
+        "items": {
+          "type": "string",
+          "maxLength": 4000,
+          "description": "Serialized list of items in the order"
+        },
+        "total": {
+          "type": "number",
+          "description": "Total order amount"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "paid", "completed"],
+          "description": "Current status of the order"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp when the order was created"
+        }
+      },
+      "required": ["id", "name", "phone", "items", "total", "status", "timestamp"]
+    },
+    "Device": {
+      "title": "Device",
+      "description": "A registered device subscription for push notifications",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique browser or session identifier"
+        },
+        "token": {
+          "type": "string",
+          "description": "FCM push token or Web Notification subscription registration"
+        },
+        "platform": {
+          "type": "string",
+          "description": "The client platform e.g. web"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of registration"
+        }
+      },
+      "required": ["id", "token", "platform", "createdAt"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "A manual push announcement sent by the store owner",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the announcement"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Notification title"
+        },
+        "body": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Notification body or message content"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["new_stock", "announcement"],
+          "description": "Category of notification"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO timestamp when the notification was dispatched"
+        }
+      },
+      "required": ["id", "title", "body", "category", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Supplement products collection"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Supplement purchase orders"
+    },
+    "/devices/{deviceId}": {
+      "schema": "Device",
+      "description": "Customer devices registered for push messages"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Broadcasted owner announcements and push notifications"
+    }
+  }
+}
